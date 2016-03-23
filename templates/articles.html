@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block nav %}
+	<span class="glyphicon glyphicon-user"></span>
+	{% if loggedin %} {{ umeeduser.name }} 
+	{% else %} Guest
+	{% endif %}
+{% endblock %}
+
+ 
+{% block nav2 %}
+	{% if loggedin and umeeduser.coremember %} 
+		<li><a href="/members/{{ umeeduser.id }}/"> MEMBERS PANEL </a> </li>
+	{% endif %}
+{% endblock %}
+
+{% block nav3 %}
+	{% if loggedin and umeeduser.isAdmin %} 
+		<li><a href="/admin/">ADMIN PANEL</a> </li>
+	{% endif %}
+{% endblock %}
+
+
+{% block make_list %}
+	{% if loggedin %}<a href="/logout/">LOGOUT</a> 
+	{% else %}<a href="/login/">SIGNUP or LOGIN</a>
+	{% endif %}
+{% endblock %}
+
+
+{% block page_text %}
+	<div class="container">
+		<div class="row">
+				<div class="col-lg-5">
+					<center><h4>our recent actions</h4></center>
+					{% for article in articles %}
+							<div class="actions">
+									<h5><a href="/posts/{{ article.id }}/">{{ article.title }}</a></h5>
+									<h6>By {{ article.umeeduser }}, {{ article.pub_date }}</h6>
+									<hr class="featurette-divider" style="border-color:#CCC;">
+						    	<p style="white-space:pre-wrap;">{{ article.body }}</p>
+					  		</div>	
+					{% endfor %}
+				</div>
+
+				<div class="col-lg-4">
+					<center><h4>Upcoming actions</h4></center>
+					{% for article in articles %}
+							<div class="actions">
+									<h5><a href="/posts/{{ article.id }}/">{{ article.title }}</a></h5>
+									<h6>By {{ article.umeeduser }}</h6>
+									<hr class="featurette-divider" style="border-color:#CCC;">
+						    	<p style="white-space:pre-wrap;">{{ article.body }}</p>
+						    	<hr class="featurette-divider">
+						    	<div class="row">
+						    		<div class="col-lg-4">
+						    			<a href="">+ Like it</a>
+						    		</div>
+						    		<div class="col-lg-8 col-lg-pull-1">
+						    			<a href="">Suggest something else</a>
+						    		</div>
+						    	</div>
+					  		</div>
+					{% endfor %}
+				</div>
+
+				<div class="col-lg-3">
+					<center><h4 >our friends</h4></center>
+					<div class="panel panel-default" style="margin: 20px auto;">
+						<div class="panel-heading" style="background:#2ECC71; color:#FFF; opacity:0.88;">
+			    			<center><h3 class="panel-title">Top 5 Contributors</h3></center>
+			  			</div>
+			  			<table class="table table-bordered table-striped shadow">
+			  				<tbody>
+			  					<tr>
+			  						<td><h6>Robert Frost</h6></td>
+			  					</tr>
+			  					<tr>
+			  						<td><h6>Mark Twain</h6></td>
+			  					</tr>
+			  					<tr>
+			  						<td><h6>Michael Jordan</h6></td>
+			  					</tr>
+			  					<tr>
+			  						<td><h6>Albert Einstein</h6></td>
+			  					</tr>
+			  					<tr>
+			  						<td><h6>Subham Gaurav</h6></td>
+			  					</tr>
+			  				</tbody>
+			  			</table>
+			  		</div>
+				</div>
+	</div>
+{% endblock %}
+
+
+{% block footer %}
+	<!-- Footer -->
+	
+{% endblock %}

@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block nav %}
+	<span class="glyphicon glyphicon-user"></span>
+	{% if loggedin %} {{ umeeduser.name }} 
+	{% else %} Guest
+	{% endif %}
+{% endblock %}
+
+ 
+{% block nav2 %}
+	{% if loggedin and umeeduser.coremember %} 
+		<li><a href="/members/{{ umeeduser.id }}/"> MEMBERS PANEL </a> </li>
+	{% endif %}
+{% endblock %}
+
+{% block nav3 %}
+	{% if loggedin and umeeduser.isAdmin %} 
+		<li><a href="/admin/">ADMIN PANEL</a> </li>
+	{% endif %}
+{% endblock %}
+
+
+{% block make_list %}
+	{% if loggedin %}<a href="/logout/">LOGOUT</a> 
+	{% else %}<a href="/login/">SIGNUP or LOGIN</a>
+	{% endif %}
+{% endblock %}
+
+
+{% block page_content %}
+<div class="container">
+	<h3 style="text-align:center; color:#18Bc9C;">Members Section</h3>
+</div>
+{% endblock %}
+
+{% block page_text %}
+<div class="container">
+
+	{% if messages %}
+	   {% for message in messages %}
+	       <div class="alert alert-danger">
+	           <button type="button" class="close" data-dismiss="alert">&times;</button>
+	           {{ message }}
+	       </div>
+	   {% endfor %}
+	{% endif %}
+
+	{% if showtable and loggedin and umeeduser.coremember == True %}
+			<div class="panel" style="border-color:#E3E3E3;">
+				<table class="table table-bordered table-striped">
+					<tbody>
+						
+						<tr style="background:#18Bc9C; color:#FFF">
+							<th><center>UMEED ID</center></th>
+							<th><center>NAME</center></th>
+							<th><center>USERNAME</center></th>
+							<th><center>EMAIL</center></th>
+							<th><center>COREMEMBER</center></th>
+						</tr>
+						{% for umeeduser in umeedusers %}
+							<tr style="color:#18Bc9C;">
+								<td><center>{{ umeeduser.id }}</center></td>
+								<td><center>{{ umeeduser.name }}</center></td>
+								<td><center>{{ umeeduser.user.username }}</center></td>
+								<td><center>{{ umeeduser.user.email }}</center></td>
+								<td><center>{% if umeeduser.coremember %}Yes{% else %}No{% endif %}</center></td>
+							</tr>
+						{% endfor %}
+
+					</tbody>
+				</table>
+			</div>
+	{% endif %}
+
+	{% if showPaymentData and loggedin and umeeduser.coremember == True %}
+			<div class="panel" style="border-color:#E3E3E3;">
+				<table class="table table-bordered table-striped">
+					<tbody>
+						
+						<tr style="background:#18Bc9C; color:#FFF">
+							<th><center>UMEED ID</center></th>
+							<th><center>NAME</center></th>
+							<th><center>USERNAME</center></th>
+							<th><center>PAYMENT ID</center></th>
+							<th><center>AMOUNT</center></th>
+							<th><center>DATE</center></th>
+							<th><center>COREMEMBER</center></th>
+						</tr>
+						{% for umeeduserPayment in umeeduserPayments %}
+							<tr style="color:#18Bc9C;">
+								<td><center>{{ umeeduserPayment.umeeduser.id }}</center></td>
+								<td><center>{{ umeeduserPayment.umeeduser.name }}</center></td>
+								<td><center>{{ umeeduserPayment.umeeduser.user.username }}</center></td>
+								<td><center>{{ umeeduserPayment.paymentId }}</center></td>
+								<td><center>{{ umeeduserPayment.amount }}</center></td>
+								<td><center>{{ umeeduserPayment.paydate }}</center></td>
+								<td><center>{% if umeeduserPayment.umeeduser.coremember %}Yes{% else %}No{% endif %}</center></td>
+							</tr>
+						{% endfor %}
+
+					</tbody>
+				</table>
+			</div>
+	{% endif %}
+
+	<div class="well well-lg" style="background:#FFF;">
+
+		<div class="accordion" id="MembersPanel">
+			
+			<div class="accordion-group panel" style="border-color:#18Bc9C;">
+				<div class="accordion-heading panel-heading" style="background:#18Bc9C;">
+					<a class="accordion-toggle" data-toggle="collapse" data-parent="#MembersPanel" href="#first" style="color:#FFF;">
+						<button type= "button" class="close" data-dismiss="modal">+</button>      	
+						<center><h4>GET USERS DATA</h4></center>
+					</a>
+				</div>
+
+				<div id="first" class="accordion-body collapse panel-body"> 
+					<div class="accordion-inner">
+						<form action="/get_payment_data/" method="post" class="form-horizontal" role="form">{% csrf_token %}
+						        <center><div class="form-group">
+						            <div class="row">
+						            	<div class="col-lg-offset-3 col-lg-6">
+						            		<input type="text" class="form-control" name="paymentData" id="paymentData" 						         placeholder="Enter username or Name">
+						            	</div>
+						            </div>
+								</div>
+								<button type="submit"class="btn" style="background:#18Bc9C; color:#FFF;"><h7>Get payment details</h7></button></center>
+						</form>
+						<center><h3>or</h3></center>
+						<center><h4><a class="btn" href="/getusers/" style="background:#18Bc9C; color:#FFF;"><h7>Retrieve Entire data</h7></a></h4></center>
+					</div>
+				</div>
+			</div>
+
+			<div class="accordion-group panel" style="border-color:#18Bc9C;">
+				<div class="accordion-heading panel-heading" style="background:#18Bc9C;">
+					<a class="accordion-toggle" data-toggle="collapse" data-parent="#MembersPanel" href="#second" style="color:#FFF;">
+						<button type= "button" class="close" data-dismiss="modal">+</button>     	
+						<center><h4>INSERT PAYMENT DATA</h4></center>
+					</a>
+				</div>
+
+				<div id="second" class="accordion-body collapse panel-body">
+					<div class="accordion-inner">
+						<h4>
+							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+							tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+							quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+							consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+							cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+							proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+						</h4>
+					</div>
+				</div>
+			</div>
+
+	</div>
+</div>
+{% endblock %}

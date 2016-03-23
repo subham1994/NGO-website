@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block nav %}
+	<span class="glyphicon glyphicon-user"></span>
+	{% if loggedin %} {{ umeeduser.name }} 
+	{% else %} Guest
+	{% endif %}
+{% endblock %}
+
+ 
+{% block nav2 %}
+	{% if loggedin and umeeduser.coremember == True %} 
+		<li><a href="/members/{{ umeeduser.id }}/"> MEMBERS PANEL </a> </li>
+	{% endif %}
+{% endblock %}
+
+{% block nav3 %}
+	{% if loggedin and umeeduser.isAdmin %} 
+		<li><a href="/admin/">ADMIN PANEL</a> </li>
+	{% endif %}
+{% endblock %}
+
+
+{% block make_list %}
+	{% if loggedin %}<a href="/logout/">LOGOUT</a> 
+	{% else %}<a href="/login/">SIGNUP or LOGIN</a>
+	{% endif %}
+{% endblock %}
+
+
+{% block page_text %}
+			<div class="container">
+				<div class="actions">
+					<h5><a href="/posts/{{ article.id }}/">{{ article.title }}</a></h5>
+	  				<h6>by {{ article.umeeduser }}, {{ article.pub_date }}</h6>
+	  				<hr class="featurette-divider" style="border-color:#CCC;">
+		    		<p style="white-space:pre-wrap;">{{ article.body }}</p>
+				</div>
+			</div>
+{% endblock %}

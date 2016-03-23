@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block nav %}
+	<span class="glyphicon glyphicon-user"></span>
+	{% if loggedin %} {{ umeeduser.name }} 
+	{% else %} Guest
+	{% endif %}
+{% endblock %}
+
+ 
+{% block nav2 %}
+	{% if loggedin and umeeduser.coremember == True %} 
+		<li><a href="/members/{{ umeeduser.id }}/"> MEMBERS PANEL </a> </li>
+	{% endif %}
+{% endblock %}
+
+{% block nav3 %}
+	{% if loggedin and umeeduser.isAdmin %} 
+		<li><a href="/admin/">ADMIN PANEL</a> </li>
+	{% endif %}
+{% endblock %}
+
+
+{% block make_list %}
+	{% if loggedin %}<a href="/logout/">LOGOUT</a> 
+	{% else %}<a href="/login/">SIGNUP or LOGIN</a>
+	{% endif %}
+{% endblock %}
+
+{% block page_text %}
+	<div class="container">
+
+	</div>
+{% endblock %}
